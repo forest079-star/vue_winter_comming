@@ -1,0 +1,7 @@
+.header {
+  background-image: url(../image/background01.png);
+  min-height: 430px;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+}
