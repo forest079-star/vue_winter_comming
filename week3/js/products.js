@@ -4,8 +4,8 @@ import { createApp } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js';
 const apiUrl = 'https://vue3-course-api.hexschool.io/v2/';
 const apiPath = 'ryanpro';
 // /v2/api/{api_path/admin/products
-let productModal = {};
-let delProductModal = {};
+let productModal = null;
+let delProductModal = null;
 
 createApp({
   data() {
@@ -40,7 +40,7 @@ createApp({
           // console.log(this.products);
         })
         .catch((err) => {
-          console.log(err.data.message);
+          alert(err.data.message);
         });
     },
     openModal(state, product) {
@@ -64,6 +64,7 @@ createApp({
         // 如果是刪除狀態會帶入刪除資料
         this.targetProduct = { ...product }; // 取得ID
       }
+      console.log('imageLength', this.targetProduct.imagesUrl.length);
     },
     updateProduct() {
       // console.log(`${apiUrl}api/${apiPath}/admin/product`);
@@ -74,18 +75,32 @@ createApp({
         url = `${apiUrl}api/${apiPath}/admin/product/${this.targetProduct.id}`;
         method = 'put';
       }
-      axios[method](url, { data: this.targetProduct }).then((res) => {
-        this.getProducts();
-        productModal.hide(); // 關掉 modal
-      });
+      axios[method](url, { data: this.targetProduct })
+        .then((res) => {
+          this.getProducts();
+          
+          productModal.hide(); // 關掉 modal
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
     },
     deleteProduct() {
       const url = `${apiUrl}api/${apiPath}/admin/product/${this.targetProduct.id}`;
-      axios.delete(url).then(() => {
-        this.getProducts();
-        delProductModal.hide(); // 關掉 modal
-      });
+      axios
+        .delete(url)
+        .then(() => {
+          this.getProducts();
+          delProductModal.hide(); // 關掉 modal
+        })
+        .catch((err) => {
+          alert(err.data.message);
+        });
     },
+    createNewImages(){
+      this.targetProduct.imagesUrl = [];
+      this.targetProduct.imagesUrl.push('');
+    }
   },
   mounted() {
     // 取出 token

@@ -60,8 +60,8 @@
             <td class="text-end">{{product.origin_price }}</td>
             <td class="text-end">{{product.price }}</td>
             <td>
-              <span v-if="product.is_enabled" class="text-success">啟用</span>
-              <span v-else>未啟用</span>
+              <span :class="[product.is_enabled ? 'text-success' : '']">{{product.is_enabled ? '啟用' : '未啟用'}}</span>
+              <!-- <span v-else>未啟用</span> -->
             </td>
             <td>
               <div class="btn-group">
@@ -84,8 +84,7 @@
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
             <h5 id="productModalLabel" class="modal-title">
-              <span v-if="isNew">新增產品</span>
-              <span v-else>編輯產品</span>
+              <span>{{isNew ? '新增產品' : '編輯產品'}}</span>
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
@@ -102,7 +101,7 @@
                 <div class="mt-4">
                   <h4>新增多圖</h4>
                   <!-- 判斷  targetProduct.imagesUrl 是陣列-->
-                  <div v-if="Array.isArray(targetProduct.imagesUrl)">
+                  <template v-if="Array.isArray(targetProduct.imagesUrl)">
                     <template v-for="(images, key) in targetProduct.imagesUrl" :key="key + 1010">
                       <div class="mb-3">
                         <label :for="`imageUrl${key}`" class="form-label">圖片網址</label>
@@ -123,8 +122,12 @@
                       @click="targetProduct.imagesUrl.pop()">
                       刪除圖片
                     </button>
-                  </div>
-
+                  </template>
+                  <template v-else>
+                    <button class="btn btn-outline-primary btn-sm d-block w-100" @click="createNewImages">
+                      新增圖片2
+                    </button>
+                  </template>
                 </div>
               </div>
               <div class="col-sm-8">
