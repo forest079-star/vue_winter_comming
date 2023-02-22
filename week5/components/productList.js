@@ -1,6 +1,6 @@
 export default {
   props: ['products', 'getProduct', 'addToCart', 'loadingStatus'],
-  template: `
+  template:/* html */ `
     <table class="table align-middle">
     <thead>
       <tr>

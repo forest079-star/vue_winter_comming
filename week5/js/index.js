@@ -1,4 +1,5 @@
 import { apiUrl, apiPath } from '../../js/config.js';
+import { Toast } from '../../js/tootls.js';
 import productModal from '../components/productModal.js';
 import cartComponent from '../components/cartComponent.js';
 import productList from '../components/productList.js';
@@ -92,12 +93,18 @@ const app = createApp({
       };
       const url = `${apiUrl}api/${apiPath}/cart`;
       axios
-        .post(url, { data: cart })
-        .then((res) => {
+      .post(url, { data: cart })
+      .then((res) => {
           // console.log('🚀 ~ file: index.js:54 ~ .then ~ res', res);
           this.loadingStatus.loadingItem = '';
           this.loadingStatus.loading = false;
-          alert('商品已經加入到購物車！');
+          const { message } = res.data;
+          
+          Toast.fire({
+            title: `${message}`,
+            icon: 'success',
+          });
+          // alert('商品已經加入到購物車！');
           this.getCart();
           this.$refs.modal.hide();
         })
@@ -137,10 +144,15 @@ const app = createApp({
         qty,
       };
       axios
-        .put(url, { data })
-        .then((res) => {
-          this.getCart();
-          alert(`該項商品數量已變更!`);
+      .put(url, { data })
+      .then((res) => {
+          this.getCart();     
+          const { message } = res.data;
+          Toast.fire({
+            title: `${message}`,
+            icon: 'success',
+          });
+          // alert(`該項商品數量已變更!`);
           this.loadingStatus.loadingItem = '';
         })
         .catch((err) => {
@@ -151,10 +163,15 @@ const app = createApp({
       this.loadingStatus.loadingItem = id;
       const url = `${apiUrl}api/${apiPath}/cart/${id}`;
       axios
-        .delete(url)
-        .then((res) => {
-          this.loadingStatus.loadingItem = '';
-          alert(`${title}該項商品已經移除!`);
+      .delete(url)
+      .then((res) => {
+        this.loadingStatus.loadingItem = '';
+        // alert(`${title}該項商品已經移除!`);
+          const { message } = res.data;
+          Toast.fire({
+            title: `${message}`,
+            icon: 'success',
+          });
           this.getCart();
         })
         .catch((err) => {
@@ -170,8 +187,13 @@ const app = createApp({
         .then((res) => {
           this.loadingStatus.loadingItem = '';
           this.loadingStatus.loading = false;
-          this.cartStatus = false;
-          alert(`清空購物車!`);
+          this.cartStatus = false; 
+          const { message } = res.data;
+          Toast.fire({
+            title: `${message}`,
+            icon: 'success',
+          });
+          // alert(`清空購物車!`);
           this.getCart();
         })
         .catch((err) => {
