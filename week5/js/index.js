@@ -57,12 +57,9 @@ const app = createApp({
       axios
         .get(url)
         .then((res) => {
-          console.log('🚀 ~ file: index.js:41 ~ axios.get ~ res', res);
+          // console.log('🚀 ~ file: index.js:41 ~ axios.get ~ res', res);
           this.products = res.data.products;
-          console.log(
-            '🚀 ~ file: index.js:43 ~ axios.get ~ this.products',
-            this.products
-          );
+          // console.log( '🚀 ~ file: index.js:43 ~ axios.get ~ this.products', this.products );
         })
         .catch((err) => {
           alert(err.response.data.message);
@@ -97,7 +94,7 @@ const app = createApp({
       axios
         .post(url, { data: cart })
         .then((res) => {
-          console.log('🚀 ~ file: index.js:54 ~ .then ~ res', res);
+          // console.log('🚀 ~ file: index.js:54 ~ .then ~ res', res);
           this.loadingStatus.loadingItem = '';
           this.loadingStatus.loading = false;
           alert('商品已經加入到購物車！');
@@ -119,13 +116,13 @@ const app = createApp({
           this.loadingStatus.loading = false;
           this.carts = res.data.data;
 
-          console.log(this.carts.carts.length);
+          // console.log(this.carts.carts.length);
           if (this.carts.carts.length === 0) {
             this.cartStatus = false;
           } else {
             this.cartStatus = true;
           }
-          console.log(this.cartStatus);
+          // console.log(this.cartStatus);
         })
         .catch((err) => {
           this.loadingStatus.loading = false;
@@ -183,7 +180,7 @@ const app = createApp({
         });
     },
     onSubmit() {
-      console.log('onSubmit');
+      // console.log('onSubmit');
       const url = `${apiUrl}/api/${apiPath}/order`;
       this.loadingStatus.loading = true;
       const data = this.order;
@@ -191,7 +188,7 @@ const app = createApp({
         .post(url, { data })
         .then((res) => {
           this.loadingStatus.loading = false;
-          console.log('🚀 ~ file: index.js:206 ~ onSubmit.post ~ res', res);
+          // console.log('🚀 ~ file: index.js:206 ~ onSubmit.post ~ res', res);
         })
         .catch((err) => {
           alert(err.response.data.message);
@@ -211,10 +208,7 @@ const app = createApp({
   mounted() {
     this.getProducts();
     this.getCart();
-    console.log(
-      '🚀 ~ file: index.js:112 ~ addToCart ~ this.cartStatus',
-      this.cartStatus
-    );
+    // console.log( '🚀 ~ file: index.js:112 ~ addToCart ~ this.cartStatus', this.cartStatus );
   },
 });
 

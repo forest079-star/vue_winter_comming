@@ -57,6 +57,6 @@ export default {
   },
   mounted() {
     this.modal = new bootstrap.Modal(this.$refs.modal);
-    console.log('🚀 ~ file: index.js:38 ~ mounted ~ this.modal', this.modal);
+    // console.log('🚀 ~ file: index.js:38 ~ mounted ~ this.modal', this.modal);
   },
 };
