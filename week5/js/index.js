@@ -1,4 +1,7 @@
 import { apiUrl, apiPath } from '../../js/config.js';
+import productModal from '../components/productModal.js';
+import cartComponent from '../components/cartComponent.js';
+import productList from '../components/productList.js';
 
 // 載入所有規則
 Object.keys(VeeValidateRules).forEach((rule) => {
@@ -15,36 +18,14 @@ VeeValidate.configure({
   validateOnInput: true, // 調整為：輸入文字時，就立即進行驗證
 });
 
-VeeValidate.defineRule('email', VeeValidateRules['email']);
-VeeValidate.defineRule('required', VeeValidateRules['required']);
+// VeeValidate.defineRule('email', VeeValidateRules['email']);
+// VeeValidate.defineRule('required', VeeValidateRules['required']);
 
 const { createApp } = Vue;
 
-const productModal = {
-  props:['product', 'addToCart'],
-  data(){
-    return{
-      modal:{},
-      tempProduct:{},
-      qty: 1,
-    }
-  },
-  template:'#userProductModal',
-  methods: {
-    show(){
-      this.modal.show();
-    },
-    hide(){
-      this.modal.hide();
-    }
-  },
-  mounted() {
-    this.modal = new bootstrap.Modal(this.$refs.modal);
-    console.log("🚀 ~ file: index.js:38 ~ mounted ~ this.modal", this.modal)
-    
-  },
-}
-
+// const productModal = {
+  
+// }
 
 const app = createApp({
   data() {
@@ -124,8 +105,8 @@ const app = createApp({
           this.$refs.modal.hide();
         })
         .catch((err) => {
-          alert(err.response.data.message);
           this.loadingStatus.loading = false;
+          alert(err.response.data.message);
         });
     },
     getCart() {
@@ -137,7 +118,7 @@ const app = createApp({
           this.loadingStatus.loadingItem = '';
           this.loadingStatus.loading = false;
           this.carts = res.data.data;
-          
+
           console.log(this.carts.carts.length);
           if (this.carts.carts.length === 0) {
             this.cartStatus = false;
@@ -153,7 +134,6 @@ const app = createApp({
     },
     changeQty(product_id, id, qty) {
       this.loadingStatus.loadingItem = id;
-      this.loadingStatus.loading = false;
       const url = `${apiUrl}api/${apiPath}/cart/${id}`;
       const data = {
         product_id,
@@ -165,28 +145,23 @@ const app = createApp({
           this.getCart();
           alert(`該項商品數量已變更!`);
           this.loadingStatus.loadingItem = '';
-          this.loadingStatus.loading = false;
         })
         .catch((err) => {
           alert(err.response.data.message);
-          this.loadingStatus.loading = false;
         });
     },
     removeCartProduct(id, title) {
-      this.loadingStatus.loading = true;
       this.loadingStatus.loadingItem = id;
       const url = `${apiUrl}api/${apiPath}/cart/${id}`;
       axios
         .delete(url)
         .then((res) => {
           this.loadingStatus.loadingItem = '';
-          this.loadingStatus.loading = false;
           alert(`${title}該項商品已經移除!`);
           this.getCart();
         })
         .catch((err) => {
           alert(err.response.data.message);
-          this.loadingStatus.loading = false;
         });
     },
     removeCartAll() {
@@ -230,12 +205,16 @@ const app = createApp({
   },
   components: {
     productModal,
+    cartComponent,
+    productList,
   },
   mounted() {
     this.getProducts();
     this.getCart();
-    console.log( '🚀 ~ file: index.js:112 ~ addToCart ~ this.cartStatus', this.cartStatus );
-
+    console.log(
+      '🚀 ~ file: index.js:112 ~ addToCart ~ this.cartStatus',
+      this.cartStatus
+    );
   },
 });
 
